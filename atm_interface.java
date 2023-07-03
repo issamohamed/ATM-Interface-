@@ -1,57 +1,55 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ATM {
 
-  public static void main(String[] args) {
-    Scanner input = new Scanner(System.in);
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        double balance = 1000.0;
+        boolean userContinues = true;
 
-    // Initializing balance to $1000
-    double balance = 1000.0;
+        while (userContinues) {
+            System.out.println("Welcome to the ATM!");
+            System.out.println("1. Check balance");
+            System.out.println("2. Withdraw funds");
+            System.out.println("3. Deposit funds");
+            System.out.println("4. Exit");
 
-    // Initialize a boolean for whether the user wants to continue using the ATM
-    boolean userContinues = true;
+            try {
+                int choice = input.nextInt();
 
-    // Continuously prompt the user for actions until they choose to exit
-    while (userContinues) {
-      // Print the main menu
-      System.out.println("Welcome to the ATM!");
-      System.out.println("1. Check balance");
-      System.out.println("2. Withdraw funds");
-      System.out.println("3. Deposit funds");
-      System.out.println("4. Exit");
-
-      // Reading the user's choice
-      int choice = input.nextInt();
-
-      // Performing the selected action
-      if (choice == 1) {
-        // Check balance
-        System.out.println("Your balance is: $" + balance);
-      } else if (choice == 2) {
-        // Withdrawing funds
-        System.out.println("Enter amount to withdraw: ");
-        double amount = input.nextDouble();
-        if (amount > balance) {
-          // if cannot withdraw more than the available balance
-          System.out.println("Insufficient funds");
-        } else {
-          balance -= amount;
-          System.out.println("Successfully withdrew $" + amount);
+                switch (choice) {
+                    case 1:
+                        System.out.println("Your balance is: $" + balance);
+                        break;
+                    case 2:
+                        System.out.println("Enter amount to withdraw: ");
+                        double withdrawAmount = input.nextDouble();
+                        if (withdrawAmount > balance) {
+                            System.out.println("Insufficient funds");
+                        } else {
+                            balance -= withdrawAmount;
+                            System.out.println("Successfully withdrew $" + withdrawAmount);
+                        }
+                        break;
+                    case 3:
+                        System.out.println("Enter amount to deposit: ");
+                        double depositAmount = input.nextDouble();
+                        balance += depositAmount;
+                        System.out.println("Successfully deposited $" + depositAmount);
+                        break;
+                    case 4:
+                        userContinues = false;
+                        System.out.println("Thank you for using the ATM. Goodbye!");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid choice.");
+                input.nextLine(); // Clear the invalid input from the scanner
+            }
         }
-      } else if (choice == 3) {
-        // Depositing funds
-        System.out.println("Enter amount to deposit: ");
-        double amount = input.nextDouble();
-        balance += amount;
-        System.out.println("Successfully deposited $" + amount);
-      } else if (choice == 4) {
-        // Exit
-        userContinues = false;
-        System.out.println("Thank you for using the ATM. Goodbye!");
-      } else {
-        // Invalid input
-        System.out.println("Invalid choice. Please try again.");
-      }
     }
-  }
 }
